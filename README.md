@@ -1,5 +1,13 @@
-## Bor
-User-friendly, tiny source code searcher written by pure Python.
+<h1 align="center">Bor</h1>
+<h4 align="center">User-friendly, tiny source code searcher written by pure Python.</h4>
+
+<p align="center">
+  <a href="https://github.com/furkanonder/bor/actions"><img alt="Actions Status" src="https://github.com/furkanonder/bor/workflows/Test/badge.svg"></a>
+  <a href="https://github.com/furkanonder/bor/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/furkanonder/bor"></a>
+  <a href="https://github.com/furkanonder/bor/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/furkanonder/bor"></a>
+  <a href="https://github.com/furkanonder/bor/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/furkanonder/bor"></a>
+  <a href="https://pepy.tech/project/bor"><img alt="Downloads" src="https://pepy.tech/badge/bor"></a>
+</p>
 
 ## Example Usages
 
