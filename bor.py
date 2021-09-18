@@ -2,7 +2,6 @@ import argparse
 import ast
 import re
 import sys
-from contextlib import suppress
 from pathlib import Path
 
 var_types = {"def": ast.FunctionDef, "class": ast.ClassDef}
@@ -63,24 +62,36 @@ def get_paths(path):
     return [path]
 
 
+def pattern_is_valid(pattern):
+    if pattern.startswith("."):
+        pattern = pattern[1:]
+    if pattern.endswith("."):
+        pattern = pattern[:-1]
+
+    return pattern.isidentifier()
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="User friendly, tiny source code searcher written by pure Python."
     )
     parser.add_argument("-v", "--version", action="version", version="0.0.1")
-    _, args = parser.parse_known_args()
 
-    if len(args) < 2 or args[0] not in var_types:
+    args, params = parser.parse_known_args()
+    var_type, pattern = params[0], params[1]
+    path = params[2] if len(params) > 2 else "."
+
+    if len(params) < 2 or var_type not in var_types or not pattern_is_valid(pattern):
         print("Please, check your inputs.")
         sys.exit(1)
 
-    var_type, pattern = args[0], args[1]
-    path = args[2] if len(args) > 2 else "."
-
     for file in get_paths(Path(path)):
-        source = file_parser(file)
-        with suppress(KeyboardInterrupt):
-            analyzer(searcher(source, file, var_type), pattern)
+        try:
+            source = file_parser(file)
+            if source:
+                analyzer(searcher(source, file, var_type), pattern)
+        except KeyboardInterrupt:
+            sys.exit(1)
 
 
 if __name__ == "__main__":

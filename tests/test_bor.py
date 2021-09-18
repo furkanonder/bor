@@ -60,3 +60,11 @@ class TestBor(unittest.TestCase):
         self.assertEqual(regex, "Cat$")
         self.assertIn("Cat", results)
         self.assertIn("BlueCat", results)
+
+    def test_pattern(self):
+        self.assertTrue(bor.pattern_is_valid(".test."), True)
+        self.assertTrue(bor.pattern_is_valid(".get"), True)
+        self.assertTrue(bor.pattern_is_valid(".get_value"), True)
+        self.assertFalse(bor.pattern_is_valid("Turkey.23"), False)
+        self.assertFalse(bor.pattern_is_valid("Ti?ger./"), False)
+        self.assertFalse(bor.pattern_is_valid("get!"), False)
