@@ -17,14 +17,14 @@ class TestBor(unittest.TestCase):
         self.assertTrue(bor.get_paths(path), path)
 
     def test_file_parser(self):
-        source = bor.file_parser(self.path)
+        source = bor.file_parser(self.path, ignore_error=False)
         self.assertIsInstance(source, ast.Module)
 
     def test_searcher(self):
         var_type = "def"
 
         for file in bor.get_paths(Path(self.path)):
-            source = bor.file_parser(file)
+            source = bor.file_parser(file, ignore_error=False)
             data = bor.searcher(source, file, var_type)
 
         nodes = list(data.get("nodes"))
@@ -39,7 +39,7 @@ class TestBor(unittest.TestCase):
         pattern = pattern.replace(".", "*")
 
         for file in bor.get_paths(Path(self.path)):
-            source = bor.file_parser(file)
+            source = bor.file_parser(file, ignore_error=False)
             data = bor.searcher(source, file, var_type)
 
         nodes = data.get("nodes")

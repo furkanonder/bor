@@ -45,13 +45,15 @@ def searcher(source, file, var_type):
     return data
 
 
-def file_parser(file):
+def file_parser(file, ignore_error):
     try:
         file = file.resolve().as_posix()
         with open(file) as f:
             source = ast.parse(f.read())
             return source
     except Exception as error:
+        if ignore_error:
+            return None
         print(error, " at " + file)
         sys.exit(1)
 
@@ -76,10 +78,17 @@ def main(argv=None):
         description="User friendly, tiny source code searcher written by pure Python."
     )
     parser.add_argument("-v", "--version", action="version", version="0.0.1")
+    parser.add_argument(
+        "--ignore-error",
+        action="store_true",
+        default=False,
+        help="Ignore the errors reading the files.",
+    )
 
     args, params = parser.parse_known_args()
     var_type, pattern = params[0], params[1]
     path = params[2] if len(params) > 2 else "."
+    ignore = args.ignore_error
 
     if len(params) < 2 or var_type not in var_types or not pattern_is_valid(pattern):
         print("Please, check your inputs.")
@@ -87,7 +96,7 @@ def main(argv=None):
 
     for file in get_paths(Path(path)):
         try:
-            source = file_parser(file)
+            source = file_parser(file, ignore)
             if source:
                 analyzer(searcher(source, file, var_type), pattern)
         except KeyboardInterrupt:
