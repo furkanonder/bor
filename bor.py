@@ -26,7 +26,8 @@ def analyzer(data, pattern):
 
     for key, value in nodes.items():
         if re.search(regex, key):
-            print(key, "at", path, ":", value)
+            values = sorted(map(int, value.split(",")))
+            print(key, "at", path, ":", values)
 
 
 def searcher(source, file, var_type):
@@ -89,12 +90,12 @@ def main():
     args, params = parser.parse_known_args()
 
     if len(params) < 2:
-        print("No variable type or pattern name provided.")
+        print("No keyword or pattern provided.")
         sys.exit(1)
     else:
         var_type, pattern = params[0], params[1]
         if var_type not in var_types or not pattern_is_valid(pattern):
-            print("Invalid variable type or pattern name.")
+            print("Invalid keyword or pattern.")
             sys.exit(1)
 
     path = params[2] if len(params) > 2 else "."
