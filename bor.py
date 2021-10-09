@@ -73,26 +73,32 @@ def pattern_is_valid(pattern):
     return pattern.isidentifier()
 
 
-def main(argv=None):
+def main():
     parser = argparse.ArgumentParser(
         description="User friendly, tiny source code searcher written by pure Python."
     )
     parser.add_argument("-v", "--version", action="version", version="0.0.1")
     parser.add_argument(
+        "-i",
         "--ignore-error",
         action="store_true",
         default=False,
-        help="Ignore the errors reading the files.",
+        help="Ignore the errors with analyzing files.",
     )
 
     args, params = parser.parse_known_args()
-    var_type, pattern = params[0], params[1]
+
+    if len(params) < 2:
+        print("No variable type or pattern name provided.")
+        sys.exit(1)
+    else:
+        var_type, pattern = params[0], params[1]
+        if var_type not in var_types or not pattern_is_valid(pattern):
+            print("Invalid variable type or pattern name.")
+            sys.exit(1)
+
     path = params[2] if len(params) > 2 else "."
     ignore = args.ignore_error
-
-    if len(params) < 2 or var_type not in var_types or not pattern_is_valid(pattern):
-        print("Please, check your inputs.")
-        sys.exit(1)
 
     for file in get_paths(Path(path)):
         try:
