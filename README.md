@@ -8,52 +8,78 @@
   <a href="https://pepy.tech/project/bor"><img alt="Downloads" src="https://pepy.tech/badge/bor"></a>
 </div>
 
+## Installation
+_bor_ can be installed by running `pip install bor`. It requires Python 3.6.0+ to run.
+
+## Usage
+_bor_ currently supports 'class' and 'def' keywords. Other Python keywords will be added in the future releases.
+
+```sh
+bor {keyword} {pattern}
+```
+
+By default, _bor_ runs in your current directory. You can run _bor_ with the specific source file or directory:
+
+```sh
+bor {keyword} {pattern} {source_file_or_directory}
+```
+
+## Configuration
+
+By default, if _bor_ encounters an error(syntax, indentation error etc.) while analyzing files, it will stop working.
+If you want to the ignore errors, you can use `--ignore-error` or `-i` argument. For example;
+
+```sh
+bor class Cat --ignore-error
+```
+
 ## Example Usages
 
 Cat is equivalent in the regular expression as '^Cat$'
-```
+```sh
 bor class Cat
 ```
 Output:
-```
-Cat at /home/arf/bor/examples/test.py : 18
+```sh
+Cat at /home/furkan/bor/examples/test.py : [18]
 ```
 
 ***
 
 .Cat is equivalent in the regular expression as 'Cat$'
-```
+```sh
 bor class .Cat
 ```
 Output:
-```
-Cat at /home/arf/bor/examples/test.py : 18
-BlueCat at /home/arf/bor/examples/test.py : 26
+```sh
+Cat at /home/furkan/bor/examples/test.py : [18]
+BlueCat at /home/furkan/bor/examples/test.py : [26]
 ```
 
 ***
 
 get. is equivalent in the regular expression as '^get'
-```
+```sh
 bor def get. examples/test.py
 ```
 Output:
-```
-get_value at /home/arf/bor/examples/test.py : 5
-get_blue_value at /home/arf/bor/examples/test.py : 11
-get_purple_value at /home/arf/bor/examples/test.py : 14
-get_meow at /home/arf/bor/examples/test.py : 22
+```sh
+get_value at /home/furkan/bor/examples/test.py : [5]
+get_blue_value at /home/furkan/bor/examples/test.py : [11]
+get_purple_value at /home/furkan/bor/examples/test.py : [14]
+get_meow at /home/furkan/bor/examples/test.py : [22]
+
 ```
 
 ***
 
 .cat. is equivalent in the regular expression as 'cat+'
-```
+```sh
 bor def .cat.
 ```
 Output:
-```
-catch_me_if_you_can at /home/arf/bor/example/test.py : 8
-am_i_blue_cat at /home/arf/bor/example/test.py : 30
-where_is_the_cat at /home/arf/bor/example/test.py : 38
+```sh
+catch_me_if_you_can at /home/furkan/bor/examples/test.py : [8]
+am_i_blue_cat at /home/furkan/bor/examples/test.py : [30]
+where_is_the_cat at /home/furkan/bor/examples/test.py : [38]
 ```
