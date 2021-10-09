@@ -78,7 +78,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="User friendly, tiny source code searcher written by pure Python."
     )
-    parser.add_argument("-v", "--version", action="version", version="0.0.1")
+    parser.add_argument("-v", "--version", action="version", version="0.1.0")
     parser.add_argument(
         "-i",
         "--ignore-error",
