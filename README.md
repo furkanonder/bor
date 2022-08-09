@@ -49,7 +49,7 @@ bor class Cat
 Output:
 
 ```sh
-Cat at /home/furkan/bor/examples/test.py : [18]
+Cat at examples/test.py:18
 ```
 
 ---
@@ -63,8 +63,8 @@ bor class .Cat
 Output:
 
 ```sh
-Cat at /home/furkan/bor/examples/test.py : [18]
-BlueCat at /home/furkan/bor/examples/test.py : [26]
+Cat at examples/test.py:18
+BlueCat at examples/test.py:26
 ```
 
 ---
@@ -78,10 +78,10 @@ bor def get. examples/test.py
 Output:
 
 ```sh
-get_value at /home/furkan/bor/examples/test.py : [5]
-get_blue_value at /home/furkan/bor/examples/test.py : [11]
-get_purple_value at /home/furkan/bor/examples/test.py : [14]
-get_meow at /home/furkan/bor/examples/test.py : [22]
+get_value at examples/test.py:5
+get_blue_value at examples/test.py:11
+get_purple_value at examples/test.py:14
+get_meow at examples/test.py:22
 ```
 
 ---
@@ -95,7 +95,7 @@ bor def .cat.
 Output:
 
 ```sh
-catch_me_if_you_can at /home/furkan/bor/examples/test.py : [8]
-am_i_blue_cat at /home/furkan/bor/examples/test.py : [30]
-where_is_the_cat at /home/furkan/bor/examples/test.py : [38]
+catch_me_if_you_can at examples/test.py:8
+am_i_blue_cat at examples/test.py:30
+where_is_the_cat at examples/test.py:38
 ```
