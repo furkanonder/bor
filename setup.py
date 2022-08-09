@@ -46,7 +46,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "bor = bor:main",
-        ],
+            "bor = bor.bor:main",
+        ]
     },
 )

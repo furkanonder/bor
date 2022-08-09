@@ -4,30 +4,37 @@ import re
 import sys
 from pathlib import Path
 
+from bor.color import BLUE, GREEN, RED, set_color
+
 var_types = {"def": ast.FunctionDef, "class": ast.ClassDef}
 
 
 def analyzer(data, pattern):
-    nodes = data.get("nodes")
-    if nodes == {}:
-        return
+    if nodes := data.get("nodes"):
+        path = data.get("path")
+        pattern = pattern.replace(".", "*")
 
-    path = data.get("path")
-    pattern = pattern.replace(".", "*")
+        if pattern.startswith("*") and pattern.endswith("*"):
+            regex = pattern.split("*")[1] + "+"
+        elif not pattern.startswith("*") and pattern.endswith("*"):
+            regex = "^" + pattern.split("*")[0]
+        elif pattern.startswith("*") and not pattern.endswith("*"):
+            regex = pattern.split("*")[1] + "$"
+        else:
+            regex = "^" + pattern + "$"
 
-    if pattern.startswith("*") and pattern.endswith("*"):
-        regex = pattern.split("*")[1] + "+"
-    elif not pattern.startswith("*") and pattern.endswith("*"):
-        regex = "^" + pattern.split("*")[0]
-    elif pattern.startswith("*") and not pattern.endswith("*"):
-        regex = pattern.split("*")[1] + "$"
+        for key, value in nodes.items():
+            if re.search(regex, key):
+                values = sorted(map(int, value.split(",")))
+                print(
+                    set_color(BLUE, key),
+                    "at",
+                    set_color(GREEN, path),
+                    ":",
+                    values,
+                )
     else:
-        regex = "^" + pattern + "$"
-
-    for key, value in nodes.items():
-        if re.search(regex, key):
-            values = sorted(map(int, value.split(",")))
-            print(key, "at", path, ":", values)
+        return None
 
 
 def searcher(source, file, var_type):
@@ -55,7 +62,7 @@ def file_parser(file, ignore_error):
     except Exception as error:
         if ignore_error:
             return None
-        print(error, " at " + file)
+        print(set_color(RED, error), "at " + set_color(BLUE, file))
         sys.exit(1)
 
 
