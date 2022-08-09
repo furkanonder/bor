@@ -14,25 +14,30 @@ VAR_TYPES: Final[Dict[str, NamedNodeType]] = {
 }
 
 
+def get_regex(pattern: str) -> str:
+    pattern = pattern.replace(".", "*")
+
+    if pattern.startswith("*") and pattern.endswith("*"):
+        regex = pattern.split("*")[1] + "+"
+    elif not pattern.startswith("*") and pattern.endswith("*"):
+        regex = "^" + pattern.split("*")[0]
+    elif pattern.startswith("*") and not pattern.endswith("*"):
+        regex = pattern.split("*")[1] + "$"
+    else:
+        regex = "^" + pattern + "$"
+
+    return regex
+
+
 def analyzer(data: dict, pattern: str) -> None:
     if nodes := data.get("nodes"):
         path = data.get("path")
-        pattern = pattern.replace(".", "*")
-
-        if pattern.startswith("*") and pattern.endswith("*"):
-            regex = pattern.split("*")[1] + "+"
-        elif not pattern.startswith("*") and pattern.endswith("*"):
-            regex = "^" + pattern.split("*")[0]
-        elif pattern.startswith("*") and not pattern.endswith("*"):
-            regex = pattern.split("*")[1] + "$"
-        else:
-            regex = "^" + pattern + "$"
+        rgx = get_regex(pattern)
 
         for key, value in nodes.items():
-            if re.search(regex, key):
-                values = sorted(map(int, value.split(",")))[0]
+            if re.search(rgx, key):
                 print(
-                    f"{set_color(BLUE, key)} at {set_color(GREEN, path)}:{values}"
+                    f"{set_color(BLUE, key)} at {set_color(GREEN, path)}:{value}"
                 )
     else:
         return None
@@ -48,24 +53,25 @@ def searcher(
             named_node = cast(NamedNodeType, node).name
             node_data = {named_node: str(node.lineno)}
             if nodes.get(named_node, None):
-                old_key = nodes.get(named_node)
-                node_data = {named_node: str(node.lineno) + "," + old_key}
+                node_data = {
+                    named_node: f"{node.lineno}, {nodes.get(named_node)}"
+                }
             nodes.update(node_data)
 
     return {"path": file_path.as_posix(), "nodes": nodes}
 
 
-def file_parser(file_path: Path, ignore_error: bool) -> ast.Module:
+def file_parser(file_path: Path, ignore_syntax_error: bool) -> ast.Module:
     try:
-        file = file_path.resolve().as_posix()
-        with open(file) as f:
-            source = ast.parse(f.read())
+        with open(file_path.resolve().as_posix()) as file:
+            source = ast.parse(file.read())
             return source
-    except Exception as error:
-        if ignore_error:
+    except Exception as err:
+        if ignore_syntax_error:
             return None
-        print(f"{set_color(RED, error)} at {set_color(BLUE, file_path)}")
-        sys.exit(1)
+        else:
+            print(f"{set_color(RED, err)} at {set_color(BLUE, file_path)}")
+            sys.exit(1)
 
 
 def get_paths(path: Path) -> Iterable[Path]:
@@ -110,12 +116,11 @@ def main() -> None:
 
     path = params[2] if len(params) > 2 else "."
     node_type = VAR_TYPES.get(var_type)
-    ignore = args.ignore_error
+    ignore_syntax_error = args.ignore_error
 
     for file_path in get_paths(Path(path)):
         try:
-            source = file_parser(file_path, ignore)
-            if source:
+            if source := file_parser(file_path, ignore_syntax_error):
                 analyzer(searcher(source, file_path, node_type), pattern)
         except KeyboardInterrupt:
             sys.exit(1)
