@@ -5,6 +5,8 @@ from pathlib import Path
 
 from bor.bor import file_parser, get_paths, pattern_is_valid, searcher
 
+VAR_TYPES = {"def": ast.FunctionDef, "class": ast.ClassDef}
+
 
 class TestBor(unittest.TestCase):
     def setUp(self):
@@ -25,7 +27,7 @@ class TestBor(unittest.TestCase):
 
         for file in get_paths(Path(self.path)):
             source = file_parser(file, ignore_error=False)
-            data = searcher(source, file, var_type)
+            data = searcher(source, file, VAR_TYPES.get(var_type))
 
         nodes = list(data.get("nodes"))
         self.assertIn("get_value", nodes)
@@ -40,7 +42,7 @@ class TestBor(unittest.TestCase):
 
         for file in get_paths(Path(self.path)):
             source = file_parser(file, ignore_error=False)
-            data = searcher(source, file, var_type)
+            data = searcher(source, file, VAR_TYPES.get(var_type))
 
         nodes = data.get("nodes")
 
