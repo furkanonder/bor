@@ -52,9 +52,9 @@ def searcher(
         if isinstance(node, node_type):
             named_node = cast(NamedNodeType, node).name
             node_data = {named_node: str(node.lineno)}
-            if nodes.get(named_node, None):
+            if values := nodes.get(named_node, None):
                 node_data = {
-                    named_node: f"{node.lineno}, {nodes.get(named_node)}"
+                    named_node: f"{node.lineno}, {values}"
                 }
             nodes.update(node_data)
 
