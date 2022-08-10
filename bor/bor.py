@@ -94,7 +94,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="User friendly, tiny source code searcher written by pure Python."
     )
-    parser.add_argument("-v", "--version", action="version", version="0.1.0")
+    parser.add_argument("-v", "--version", action="version", version="0.2.0")
     parser.add_argument(
         "-i",
         "--ignore-error",

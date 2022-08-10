@@ -13,7 +13,7 @@ def get_long_description():
 
 setup(
     name="bor",
-    version="0.1.0",
+    version="0.2.0",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     description="User-friendly, tiny source code searcher written by pure Python.",
