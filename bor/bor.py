@@ -18,13 +18,13 @@ def get_regex(pattern: str) -> str:
     pattern = pattern.replace(".", "*")
 
     if pattern.startswith("*") and pattern.endswith("*"):
-        regex = pattern.split("*")[1] + "+"
+        regex = f'{pattern.split("*")[1]}+'
     elif not pattern.startswith("*") and pattern.endswith("*"):
-        regex = "^" + pattern.split("*")[0]
+        regex = f'^{pattern.split("*")[0]}'
     elif pattern.startswith("*") and not pattern.endswith("*"):
-        regex = pattern.split("*")[1] + "$"
+        regex = f'{pattern.split("*")[1]}$'
     else:
-        regex = "^" + pattern + "$"
+        regex = f"^{pattern}$"
 
     return regex
 
