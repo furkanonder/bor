@@ -10,7 +10,7 @@
 
 ## Installation
 
-_bor_ can be installed by running `pip install bor`. It requires Python 3.6.0+ to run.
+_bor_ can be installed by running `pip install bor`. It requires Python 3.8.0+ to run.
 
 ## Usage
 
