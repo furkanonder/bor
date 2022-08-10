@@ -23,7 +23,7 @@ setup(
     url="https://github.com/furkanonder/bor/",
     license="MIT",
     python_requires=">=3.8",
-    py_modules=["bor"],
+    packages=["bor"],
     install_requires=[],
     extras_require={},
     zip_safe=False,
