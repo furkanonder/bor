@@ -19,14 +19,14 @@ class TestBor(unittest.TestCase):
         self.assertTrue(get_paths(path), path)
 
     def test_file_parser(self):
-        source = file_parser(self.path, ignore_error=False)
+        source = file_parser(self.path, ignore_syntax_error=False)
         self.assertIsInstance(source, ast.Module)
 
     def test_searcher(self):
         var_type = "def"
 
         for file in get_paths(Path(self.path)):
-            source = file_parser(file, ignore_error=False)
+            source = file_parser(file, ignore_syntax_error=False)
             data = searcher(source, file, VAR_TYPES.get(var_type))
 
         nodes = list(data.get("nodes"))
@@ -41,7 +41,7 @@ class TestBor(unittest.TestCase):
         pattern = pattern.replace(".", "*")
 
         for file in get_paths(Path(self.path)):
-            source = file_parser(file, ignore_error=False)
+            source = file_parser(file, ignore_syntax_error=False)
             data = searcher(source, file, VAR_TYPES.get(var_type))
 
         nodes = data.get("nodes")
