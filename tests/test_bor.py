@@ -3,7 +3,9 @@ import re
 import unittest
 from pathlib import Path
 
-import bor
+from bor.bor import file_parser, get_paths, pattern_is_valid, searcher
+
+VAR_TYPES = {"def": ast.FunctionDef, "class": ast.ClassDef}
 
 
 class TestBor(unittest.TestCase):
@@ -14,18 +16,18 @@ class TestBor(unittest.TestCase):
 
     def test_path(self):
         path = Path(".")
-        self.assertTrue(bor.get_paths(path), path)
+        self.assertTrue(get_paths(path), path)
 
     def test_file_parser(self):
-        source = bor.file_parser(self.path, ignore_error=False)
+        source = file_parser(self.path, ignore_syntax_error=False)
         self.assertIsInstance(source, ast.Module)
 
     def test_searcher(self):
         var_type = "def"
 
-        for file in bor.get_paths(Path(self.path)):
-            source = bor.file_parser(file, ignore_error=False)
-            data = bor.searcher(source, file, var_type)
+        for file in get_paths(Path(self.path)):
+            source = file_parser(file, ignore_syntax_error=False)
+            data = searcher(source, file, VAR_TYPES.get(var_type))
 
         nodes = list(data.get("nodes"))
         self.assertIn("get_value", nodes)
@@ -38,9 +40,9 @@ class TestBor(unittest.TestCase):
         var_type = "class"
         pattern = pattern.replace(".", "*")
 
-        for file in bor.get_paths(Path(self.path)):
-            source = bor.file_parser(file, ignore_error=False)
-            data = bor.searcher(source, file, var_type)
+        for file in get_paths(Path(self.path)):
+            source = file_parser(file, ignore_syntax_error=False)
+            data = searcher(source, file, VAR_TYPES.get(var_type))
 
         nodes = data.get("nodes")
 
@@ -62,9 +64,9 @@ class TestBor(unittest.TestCase):
         self.assertIn("BlueCat", results)
 
     def test_pattern(self):
-        self.assertTrue(bor.pattern_is_valid(".test."), True)
-        self.assertTrue(bor.pattern_is_valid(".get"), True)
-        self.assertTrue(bor.pattern_is_valid(".get_value"), True)
-        self.assertFalse(bor.pattern_is_valid("Turkey.23"), False)
-        self.assertFalse(bor.pattern_is_valid("Ti?ger./"), False)
-        self.assertFalse(bor.pattern_is_valid("get!"), False)
+        self.assertTrue(pattern_is_valid(".test."), True)
+        self.assertTrue(pattern_is_valid(".get"), True)
+        self.assertTrue(pattern_is_valid(".get_value"), True)
+        self.assertFalse(pattern_is_valid("Turkey.23"), False)
+        self.assertFalse(pattern_is_valid("Ti?ger./"), False)
+        self.assertFalse(pattern_is_valid("get!"), False)

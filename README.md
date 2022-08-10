@@ -9,16 +9,20 @@
 </div>
 
 ## Installation
-_bor_ can be installed by running `pip install bor`. It requires Python 3.6.0+ to run.
+
+_bor_ can be installed by running `pip install bor`. It requires Python 3.8.0+ to run.
 
 ## Usage
-_bor_ currently supports 'class' and 'def' keywords. Other Python keywords will be added in the future releases.
+
+_bor_ currently supports `class` and `def` keywords. Other Python keywords will be added
+in the future releases.
 
 ```sh
 bor {keyword} {pattern}
 ```
 
-By default, _bor_ runs in your current directory. You can run _bor_ with the specific source file or directory:
+By default, _bor_ runs in your current directory. You can run _bor_ with the specific
+source file or directory:
 
 ```sh
 bor {keyword} {pattern} {source_file_or_directory}
@@ -26,8 +30,9 @@ bor {keyword} {pattern} {source_file_or_directory}
 
 ## Configuration
 
-By default, if _bor_ encounters an error(syntax, indentation error etc.) while analyzing files, it will stop working.
-If you want to the ignore errors, you can use `--ignore-error` or `-i` argument. For example;
+By default, if _bor_ encounters an error(syntax, indentation error etc.) while analyzing
+files, it will stop working. If you want to the ignore errors, you can use
+`--ignore-error` or `-i` argument. For example;
 
 ```sh
 bor class Cat --ignore-error
@@ -35,51 +40,62 @@ bor class Cat --ignore-error
 
 ## Example Usages
 
-Cat is equivalent in the regular expression as '^Cat$'
+`Cat` is equivalent in the regular expression as `^Cat$`
+
 ```sh
 bor class Cat
 ```
+
 Output:
+
 ```sh
-Cat at /home/furkan/bor/examples/test.py : [18]
+Cat at examples/test.py:18
 ```
 
-***
+---
 
-.Cat is equivalent in the regular expression as 'Cat$'
+`.Cat` is equivalent in the regular expression as `Cat$`
+
 ```sh
 bor class .Cat
 ```
+
 Output:
+
 ```sh
-Cat at /home/furkan/bor/examples/test.py : [18]
-BlueCat at /home/furkan/bor/examples/test.py : [26]
+Cat at examples/test.py:18
+BlueCat at examples/test.py:26
 ```
 
-***
+---
 
-get. is equivalent in the regular expression as '^get'
+`get.` is equivalent in the regular expression as `^get`
+
 ```sh
 bor def get. examples/test.py
 ```
-Output:
-```sh
-get_value at /home/furkan/bor/examples/test.py : [5]
-get_blue_value at /home/furkan/bor/examples/test.py : [11]
-get_purple_value at /home/furkan/bor/examples/test.py : [14]
-get_meow at /home/furkan/bor/examples/test.py : [22]
 
+Output:
+
+```sh
+get_value at examples/test.py:5
+get_blue_value at examples/test.py:11
+get_purple_value at examples/test.py:14
+get_meow at examples/test.py:22
 ```
 
-***
+---
 
-.cat. is equivalent in the regular expression as 'cat+'
+`.cat.` is equivalent in the regular expression as `cat+`
+
 ```sh
 bor def .cat.
 ```
+
 Output:
+
 ```sh
-catch_me_if_you_can at /home/furkan/bor/examples/test.py : [8]
-am_i_blue_cat at /home/furkan/bor/examples/test.py : [30]
-where_is_the_cat at /home/furkan/bor/examples/test.py : [38]
+catch_me_if_you_can at examples/test.py:8
+am_i_blue_cat at examples/test.py:30
+where_is_the_cat at examples/test.py:38
 ```
